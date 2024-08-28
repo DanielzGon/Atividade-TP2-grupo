@@ -1,0 +1,108 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Página do index */
+.body-alimentacao {
+    background-color: #0C5271;
+}
+
+.body-alimentacao h1,.body-alimentacao h3 {
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+}
+
+.body-alimentacao p,.body-alimentacao div {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #084B5A;
+    color: #fff;
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.1);
+    line-height: 1.6;
+}
+
+.body-alimentacao .img-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.body-alimentacao .img1, .body-alimentacao .img2 {
+    max-width: 45%;
+    height: auto;
+    border-radius: 52px;
+    padding: 1%;
+}
+
+/* Página do Cadastro */
+.body-cadastro {
+    background-color: #0C5271;
+}
+
+.body-cadastro h1, .body-cadastro h3 {
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+}
+
+.body-cadastro p {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #084B5A;
+    color: #fff;
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.1);
+    line-height: 1.6;
+}
+
+.body-cadastro form {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #084B5A;
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.1);
+}
+
+.body-cadastro input[type="text"] {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: none;
+}
+a {
+    display: block;
+    color: #0C5271;
+    background-color: #fff;
+    padding: 10px 20px;
+    margin: 10px auto;
+    text-decoration: none;
+    border-radius: 5px;
+    text-align: center;
+    width: fit-content;
+    transition: background-color 0.5s ease, transform 0.5s ease;
+}
+
+a:hover {
+    background-color:rgb(133, 183, 254);
+    transform: scale(1.1);
+}
+
+
+h2 {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #084B5A;
+    color: #fff;
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.1);
+}
+
+label {
+    color: white;
+}
