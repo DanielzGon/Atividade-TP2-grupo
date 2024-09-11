@@ -1,5 +1,3 @@
-const port = 8080;
-
 const express = require("express");
 const fs = require("fs");
 
@@ -21,6 +19,7 @@ if (fs.existsSync('usuario.json')) {
 
 app.get("/", (req, res) => {
   res.render("index");
+  //res.redirect (Redireciona para outra pagina)
 });
 
 app.get("/informacoes", (req, res) => {
@@ -52,5 +51,5 @@ app.get('/mostrar', (req, res) => {
   res.render('result', { vetorNomes })
 })
 
-
+const port = 3000; //mudar para 3000 pro glitch
 app.listen(port, () => console.log("Servidor funcionando na porta: ", port));
