@@ -16,7 +16,7 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
     // Send a ping to confirm a successful connection
-    let objeto = {teste: "Teste", x: 10};
+    let objeto = { teste: "Teste", x: 10 };
     await client.db("TP2").collection("teste2").insertOne(objeto);
     console.log("Salvou?");
   } finally {

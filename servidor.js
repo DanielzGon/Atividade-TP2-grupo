@@ -1,4 +1,13 @@
 const { MongoClient, ServerApiVersion } = require('mongodb');
+const uri = "mongodb+srv://diego:pivete@perelswork.bcv8n.mongodb.net/?retryWrites=true&w=majority&appName=PerelsWork";
+// Create a MongoClient with a MongoClientOptions object to set the Stable API version
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  }
+});
 const express = require("express");
 const fs = require("fs");
 
@@ -31,7 +40,7 @@ app.get("/cadastro", (req, res) => {
   res.render("cadastro");
 });
 
-app.post('/pedirDadosdoUsuario', (req, res) => {
+app.post('/pedirDadosdoUsuario', async (req, res) => {
   let nomeNoForm = req.body.nome
   let sobrenomeNoForm = req.body.sobrenome
   let telefoneNoForm = req.body.telefone
@@ -43,7 +52,18 @@ app.post('/pedirDadosdoUsuario', (req, res) => {
   console.log(cadastro);
   console.log('\n' + JSON.stringify(cadastro) + ',');
   vetorNomes.push(cadastro)
-  fs.writeFileSync('usuario.json', JSON.stringify(vetorNomes))
+  try {
+    // Connect the client to the server	(optional starting in v4.7)
+    await client.connect();
+    // Send a ping to confirm a successful connection
+    let objeto = { teste: "Teste", x: 10 };
+    await client.db("fome").collection("pessoas").insertOne(cadastro);
+    console.log("Salvou?");
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await client.close();
+  }
+  //fs.writeFileSync('usuario.json', JSON.stringify(vetorNomes))
   res.redirect('/informacoes')
 })
 
