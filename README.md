@@ -4,4 +4,4 @@ Atividade feita por Daniel Gonçalves, Diego Maia, Kauan Gavinho e Rafhael Souza
 ##Dependências necessárias: express, ejs, cors, fs.
 Abra a pasta do projeto pelo terminal e digite o comando: npm i ejs express cors fs mongodb.
 
-Live Share (https://prod.liveshare.vsengsaas.visualstudio.com/join?51258604108AB834E8F0CA691BD1B183D792)
+Live Share (https://prod.liveshare.vsengsaas.visualstudio.com/join?D3D48DFC600D6CC9FE39AA574B3687A1EAE7)
