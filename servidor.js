@@ -1,6 +1,7 @@
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const uri = "mongodb+srv://diego:pivete@perelswork.bcv8n.mongodb.net/?retryWrites=true&w=majority&appName=PerelsWork";
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
+
+// Criação do MongoClient
 const client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
@@ -8,9 +9,8 @@ const client = new MongoClient(uri, {
     deprecationErrors: true,
   }
 });
-const express = require("express");
-const fs = require("fs");
 
+const express = require("express");
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
@@ -19,17 +19,19 @@ app.use(express.static("public"));
 const cors = require("cors");
 app.use(cors());
 
-let vetorNomes = []
-if (fs.existsSync('usuario.json')) {
-  const dados = fs.readFileSync('usuario.json', 'utf-8')
-  console.log(dados);
-  vetorNomes = JSON.parse(dados)
-}
+let vetorNomes = [];
 
+async function connectToDB() {
+  try {
+    await client.connect();
+    console.log("Conectado ao MongoDB");
+  } catch (error) {
+    console.error("Erro ao conectar ao MongoDB", error);
+  }
+}
 
 app.get("/", (req, res) => {
   res.render("index");
-  //res.redirect (Redireciona para outra pagina)
 });
 
 app.get("/informacoes", (req, res) => {
@@ -40,37 +42,59 @@ app.get("/cadastro", (req, res) => {
   res.render("cadastro");
 });
 
+// Recebe os dados do formulário e salva no MongoDB
 app.post('/pedirDadosdoUsuario', async (req, res) => {
-  let nomeNoForm = req.body.nome
-  let sobrenomeNoForm = req.body.sobrenome
-  let telefoneNoForm = req.body.telefone
+  let nomeNoForm = req.body.nome;
+  let sobrenomeNoForm = req.body.sobrenome;
+  let telefoneNoForm = req.body.telefone;
   let cadastro = {
-    'nome': nomeNoForm,
-    'sobrenome': sobrenomeNoForm,
-    'telefone': telefoneNoForm,
-  }
+    nome: nomeNoForm,
+    sobrenome: sobrenomeNoForm,
+    telefone: telefoneNoForm,
+  };
   console.log(cadastro);
-  console.log('\n' + JSON.stringify(cadastro) + ',');
-  vetorNomes.push(cadastro)
+  
   try {
-    // Connect the client to the server	(optional starting in v4.7)
+    // Conectar ao MongoDB
     await client.connect();
-    // Send a ping to confirm a successful connection
-    let objeto = { teste: "Teste", x: 10 };
-    await client.db("fome").collection("pessoas").insertOne(cadastro);
-    console.log("Salvou?");
+    const db = client.db("fome");  // Nome do banco de dados
+    const collection = db.collection("pessoas");  // Nome da coleção
+
+    // Inserir dados na coleção
+    await collection.insertOne(cadastro);
+    console.log("Cadastro salvo com sucesso no MongoDB!");
+
+  } catch (error) {
+    console.error("Erro ao salvar dados no MongoDB", error);
   } finally {
-    // Ensures that the client will close when you finish/error
+    // Fechar a conexão com o banco
     await client.close();
   }
-  //fs.writeFileSync('usuario.json', JSON.stringify(vetorNomes))
-  res.redirect('/informacoes')
-})
 
-app.get('/mostrar', (req, res) => {
-  content = JSON.parse(fs.readFileSync('usuario.json', 'utf8'))
-  res.render('result', { vetorNomes })
-})
+  res.redirect('/informacoes');
+});
 
-const port = 3000; //mudar para 3000 pro glitch
-app.listen(port, () => console.log("Servidor funcionando na porta: ", port));
+// Rota para mostrar os dados cadastrados
+app.get('/mostrar', async (req, res) => {
+  try {
+    // Conectar ao MongoDB
+    await client.connect();
+    const db = client.db("fome");
+    const collection = db.collection("pessoas");
+
+    // Recuperar todos os dados da coleção
+    const vetorNomes = await collection.find({}).toArray();
+    res.render('result', { vetorNomes });
+  } catch (error) {
+    console.error("Erro ao recuperar dados do MongoDB", error);
+    res.status(500).send("Erro ao recuperar dados do banco de dados.");
+  } finally {
+    await client.close();
+  }
+});
+
+const port = 3000;
+app.listen(port, () => console.log("Servidor funcionando na porta:", port));
+
+// Conectar ao banco de dados ao iniciar o servidor
+connectToDB();
